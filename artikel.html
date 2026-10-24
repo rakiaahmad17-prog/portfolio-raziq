@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Writing — Ahmad Raziq</title>
+<meta name="description" content="Notes on quoting websites honestly, designing at 390px first, and the grid this site is built on.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..600;1,6..72,200..600&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2314120E'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='16' fill='%23F3EFE6' text-anchor='middle'%3EAR%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="progress" aria-hidden="true"><span data-progress></span></div>
+
+<header class="site-header" data-header>
+  <div class="wrap header__inner">
+    <a class="brand" href="index.html" aria-label="Ahmad Raziq — home">
+      <span class="brand__mark" aria-hidden="true">AR</span>
+      <span class="brand__text">
+        <span class="brand__name">Ahmad Raziq</span>
+        <span class="brand__role">Web designer · Makassar</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html">Work</a>
+      <a href="artikel.html" aria-current="true">Writing</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#process">Process</a>
+      <a href="index.html#about">About</a>
+    </nav>
+
+    <div class="header__actions">
+      <button class="grid-toggle" type="button" data-grid-toggle aria-pressed="false" title="Show the layout grid (G)">
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+          <path d="M1 1h12v12H1zM5 1v12M9 1v12M1 5h12M1 9h12" fill="none" stroke="currentColor" stroke-width="1"/>
+        </svg>
+        <span>Grid</span>
+      </button>
+      <a class="btn btn--sm" href="index.html#contact">Start a project
+        <svg class="arw" width="12" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 11 11 3M4.5 3H11v6.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+      </a>
+      <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu">
+        <span class="menu-btn__lines" aria-hidden="true"><i></i><i></i></span>
+        <span class="menu-btn__label">Menu</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="menu" id="menu" data-menu>
+  <div class="menu__inner wrap">
+    <p class="mono menu__eyebrow">Navigation</p>
+    <nav class="menu__nav" aria-label="Mobile">
+      <a href="index.html"><span class="mono">01</span>Work</a>
+      <a href="artikel.html"><span class="mono">02</span>Writing</a>
+      <a href="index.html#services"><span class="mono">03</span>Services</a>
+      <a href="index.html#process"><span class="mono">04</span>Process</a>
+      <a href="index.html#about"><span class="mono">05</span>About</a>
+      <a href="index.html#contact"><span class="mono">06</span>Contact</a>
+    </nav>
+    <div class="menu__foot">
+      <div>
+        <p class="mono">Based in</p>
+        <p>Makassar, South Sulawesi<br>Indonesia — WITA / UTC+8</p>
+      </div>
+      <div>
+        <p class="mono">WhatsApp</p>
+        <a href="https://wa.me/6281958343836" target="_blank" rel="noopener">+62 819 5834 3836</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+  <section class="sec sec--top">
+    <div class="wrap">
+      <header class="sec-head" data-reveal>
+        <p class="mono sec-head__label">02 — Writing</p>
+        <div class="sec-head__body">
+          <h2>Notes on the <em>work.</em></h2>
+          <p class="lead">Short pieces on quoting websites honestly, designing for the phone that actually opens the link, and the measurements behind this page. Written the way I work — plain sentences, no filler.</p>
+        </div>
+      </header>
+
+      <div class="writing-tools" data-reveal>
+        <div class="chips" id="chips" role="group" aria-label="Filter by tag"></div>
+        <input class="search" id="search" type="search" placeholder="Search articles…" aria-label="Search articles">
+      </div>
+
+      <div class="art-list" id="list" aria-live="polite">
+        <p class="state">Loading articles…</p>
+      </div>
+
+      <p class="hint" style="margin-top: 24px">
+        Articles are Markdown files in
+        <a href="https://github.com/rakiaahmad17-prog/portfolio-raziq/tree/main/articles" target="_blank" rel="noopener">this repository</a>,
+        published from the in-browser editor at <a href="tulis.html">/tulis</a>.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <p class="footer__mark">Ahmad Raziq</p>
+      <div class="footer__nav">
+        <div>
+          <p class="mono">Pages</p>
+          <a href="index.html">Work</a>
+          <a href="artikel.html">Writing</a>
+          <a href="index.html#services">Services</a>
+          <a href="index.html#process">Process</a>
+          <a href="index.html#about">About</a>
+        </div>
+        <div>
+          <p class="mono">Elsewhere</p>
+          <a href="https://barakadental.com" target="_blank" rel="noopener">Baraka Dental ↗</a>
+          <a href="https://wa.me/6281958343836" target="_blank" rel="noopener">WhatsApp ↗</a>
+          <a href="tel:+6281958343836">+62 819 5834 3836</a>
+        </div>
+        <div>
+          <p class="mono">Studio</p>
+          <p>Makassar, South Sulawesi<br>Indonesia — WITA</p>
+          <p data-clock>—</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="mono">© 2026 Ahmad Raziq Abiyuqail Umarella</p>
+      <p class="mono">Designed and built by hand in Makassar. No template.</p>
+      <button class="to-top mono" type="button" data-top>Back to top ↑</button>
+    </div>
+  </div>
+</footer>
+
+<button class="grid-badge" type="button" data-grid-toggle aria-pressed="false" hidden>
+  Grid on — press G to hide
+</button>
+
+<div class="grid-overlay" data-grid-overlay data-on="false" aria-hidden="true">
+  <div class="grid-overlay__cols"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="grid-overlay__baseline"></div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/md.js"></script>
+<script src="js/articles.js"></script>
+<script src="main.js" defer></script>
+<script>
+(function () {
+  "use strict";
+
+  var all = [];
+  var activeTag = "";
+  var query = "";
+
+  var listEl = document.getElementById("list");
+  var chipsEl = document.getElementById("chips");
+  var searchEl = document.getElementById("search");
+
+  function fmtDate(d) {
+    if (!d) return "—";
+    var p = String(d).split("-");
+    if (p.length !== 3) return d;
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return p[2] + " " + months[Number(p[1]) - 1] + " " + p[0];
+  }
+
+  function renderChips() {
+    var tags = [];
+    all.forEach(function (a) {
+      a.tags.forEach(function (t) { if (tags.indexOf(t) < 0) tags.push(t); });
+    });
+    tags.sort();
+
+    chipsEl.innerHTML =
+      '<button class="chip' + (activeTag === "" ? " is-on" : "") + '" data-tag="">All</button>' +
+      tags.map(function (t) {
+        return '<button class="chip' + (activeTag === t ? " is-on" : "") + '" data-tag="' + t + '">' + t + "</button>";
+      }).join("");
+  }
+
+  function visible() {
+    return all.filter(function (a) {
+      var okTag = !activeTag || a.tags.indexOf(activeTag) >= 0;
+      var hay = (a.title + " " + a.excerpt + " " + a.tags.join(" ")).toLowerCase();
+      return okTag && (!query || hay.indexOf(query) >= 0);
+    });
+  }
+
+  function renderList() {
+    var rows = visible();
+    if (!rows.length) {
+      listEl.innerHTML = '<p class="state">Nothing matches that. Try another word.</p>';
+      return;
+    }
+    listEl.innerHTML = rows.map(function (a) {
+      return (
+        '<a class="art-row" href="article.html?slug=' + encodeURIComponent(a.slug) + '">' +
+          '<span class="art-row__date">' + fmtDate(a.date) + "</span>" +
+          "<span>" +
+            '<h3 class="art-row__title">' + a.title + "</h3>" +
+            '<p class="art-row__excerpt">' + a.excerpt + "</p>" +
+            '<span class="art-row__foot">' +
+              a.tags.map(function (t) { return '<span class="tag">' + t + "</span>"; }).join("") +
+            "</span>" +
+          "</span>" +
+          '<span class="art-row__mins">' + a.minutes + " min</span>" +
+          '<span class="art-row__arrow" aria-hidden="true">→</span>' +
+        "</a>"
+      );
+    }).join("");
+  }
+
+  function draw() { renderChips(); renderList(); }
+
+  chipsEl.addEventListener("click", function (e) {
+    var btn = e.target.closest(".chip");
+    if (!btn) return;
+    activeTag = btn.getAttribute("data-tag") || "";
+    draw();
+  });
+
+  searchEl.addEventListener("input", function () {
+    query = searchEl.value.trim().toLowerCase();
+    renderList();
+  });
+
+  window.Articles.list()
+    .then(function (list) { all = list; draw(); })
+    .catch(function () {
+      listEl.innerHTML =
+        '<p class="state">Could not reach the article repository just now. Reload in a moment, or read them on ' +
+        '<a href="' + window.Articles.repoUrl() + '" target="_blank" rel="noopener">GitHub</a>.</p>';
+    });
+})();
+</script>
+</body>
+</html>

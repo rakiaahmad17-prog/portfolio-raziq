@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Write — Ahmad Raziq</title>
+<meta name="description" content="The in-browser editor used to publish articles on ahmadraziq.design.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..600;1,6..72,200..600&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2314120E'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='16' fill='%23F3EFE6' text-anchor='middle'%3EAR%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header" data-header>
+  <div class="wrap header__inner">
+    <a class="brand" href="index.html" aria-label="Ahmad Raziq — home">
+      <span class="brand__mark" aria-hidden="true">AR</span>
+      <span class="brand__text">
+        <span class="brand__name">Ahmad Raziq</span>
+        <span class="brand__role">Web designer · Makassar</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html">Work</a>
+      <a href="artikel.html">Writing</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#process">Process</a>
+      <a href="index.html#about">About</a>
+    </nav>
+
+    <div class="header__actions">
+      <a class="btn btn--sm" href="artikel.html">View writing</a>
+      <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu">
+        <span class="menu-btn__lines" aria-hidden="true"><i></i><i></i></span>
+        <span class="menu-btn__label">Menu</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="menu" id="menu" data-menu>
+  <div class="menu__inner wrap">
+    <p class="mono menu__eyebrow">Navigation</p>
+    <nav class="menu__nav" aria-label="Mobile">
+      <a href="index.html"><span class="mono">01</span>Work</a>
+      <a href="artikel.html"><span class="mono">02</span>Writing</a>
+      <a href="tulis.html"><span class="mono">03</span>Write</a>
+      <a href="index.html#services"><span class="mono">04</span>Services</a>
+      <a href="index.html#process"><span class="mono">05</span>Process</a>
+      <a href="index.html#about"><span class="mono">06</span>About</a>
+    </nav>
+    <div class="menu__foot">
+      <div>
+        <p class="mono">Based in</p>
+        <p>Makassar, South Sulawesi<br>Indonesia — WITA / UTC+8</p>
+      </div>
+      <div>
+        <p class="mono">WhatsApp</p>
+        <a href="https://wa.me/6281958343836" target="_blank" rel="noopener">+62 819 5834 3836</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+  <section class="sec sec--top">
+    <div class="wrap">
+      <header class="sec-head" data-reveal>
+        <p class="mono sec-head__label">03 — Write</p>
+        <div class="sec-head__body">
+          <h2>Write, then <em>publish.</em></h2>
+          <p class="lead">Articles on this site are Markdown files. This page is the editor: write on the left, see it rendered on the right, publish straight to the live site. Nothing is stored here — drafts stay in this browser until you send them.</p>
+        </div>
+      </header>
+
+      <!-- TOKEN GATE -->
+      <div class="gate" id="gate" hidden>
+        <h2>Connect your GitHub token</h2>
+        <p>Publishing needs one thing: a token that is allowed to write to this repository. It is kept in this browser only and is sent to <code>api.github.com</code> and nowhere else.</p>
+        <ol>
+          <li>Open <a href="https://github.com/settings/personal-access-tokens/new?name=Portfolio+writer&description=Writes+articles+to+portfolio-raziq&contents=write" target="_blank" rel="noopener">github.com/settings/personal-access-tokens</a>.</li>
+          <li>Choose <strong>Fine-grained token</strong>, repository access <strong>Only select repositories → portfolio-raziq</strong>.</li>
+          <li>Give it <strong>Contents: Read and write</strong>. Nothing else.</li>
+          <li>Generate, copy, and paste it below.</li>
+        </ol>
+        <div class="fields">
+          <label class="field field--wide">
+            <span>GitHub token</span>
+            <input id="tokenInput" type="password" placeholder="github_pat_…" autocomplete="off" spellcheck="false">
+          </label>
+        </div>
+        <div class="actions">
+          <button class="btn" type="button" id="saveToken">Save and open the editor</button>
+          <button class="btn btn--ghost" type="button" id="forgetToken" hidden>Forget token</button>
+        </div>
+        <p class="log" id="gateLog" hidden></p>
+      </div>
+
+      <!-- EDITOR -->
+      <div id="editor" hidden>
+        <div class="fields">
+          <label class="field field--wide">
+            <span>Title</span>
+            <input id="fTitle" type="text" placeholder="Why this site has no price list">
+          </label>
+          <label class="field">
+            <span>Slug — the filename</span>
+            <input id="fSlug" type="text" placeholder="why-this-site-has-no-price-list" autocomplete="off" spellcheck="false">
+          </label>
+          <label class="field">
+            <span>Date</span>
+            <input id="fDate" type="date">
+          </label>
+          <label class="field field--wide">
+            <span>Tags — comma separated</span>
+            <input id="fTags" type="text" placeholder="pricing, process">
+          </label>
+          <label class="field field--wide">
+            <span>Excerpt — one sentence, shown in the list</span>
+            <input id="fExcerpt" type="text" placeholder="Every service on this site says price on request. That is not evasion.">
+          </label>
+        </div>
+
+        <div class="editor">
+          <div class="pane">
+            <div class="pane__bar">
+              <span>Markdown</span>
+              <span id="counts">0 words · 1 min</span>
+            </div>
+            <div class="pane__body">
+              <div class="toolbar" role="toolbar" aria-label="Formatting">
+                <button class="tbtn" type="button" data-wrap="**">Bold</button>
+                <button class="tbtn" type="button" data-wrap="*">Italic</button>
+                <button class="tbtn" type="button" data-line="## ">H2</button>
+                <button class="tbtn" type="button" data-line="### ">H3</button>
+                <button class="tbtn" type="button" data-line="> ">Quote</button>
+                <button class="tbtn" type="button" data-line="- ">List</button>
+                <button class="tbtn" type="button" data-line="1. ">Numbered</button>
+                <button class="tbtn" type="button" data-block="```">Code</button>
+                <button class="tbtn" type="button" data-link="1">Link</button>
+              </div>
+              <textarea id="fBody" spellcheck="true" placeholder="Start with the argument, not the introduction.&#10;&#10;## A heading&#10;&#10;A paragraph. **Bold**, *italic*, `code`, and [a link](https://example.com)."></textarea>
+            </div>
+          </div>
+
+          <div class="pane">
+            <div class="pane__bar"><span>Preview</span><span id="previewSlug"></span></div>
+            <div class="pane__body">
+              <div class="prose" id="prese"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn" type="button" id="publish">Publish to the live site
+            <svg class="arw" width="12" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 11 11 3M4.5 3H11v6.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+          </button>
+          <button class="btn btn--ghost" type="button" id="download">Download .md</button>
+          <button class="btn btn--ghost" type="button" id="loadExisting">Load an existing article</button>
+          <button class="btn btn--ghost" type="button" id="clearAll">Start empty</button>
+          <span class="hint" id="savedHint"></span>
+        </div>
+
+        <p class="log" id="log" aria-live="polite">Draft saves itself to this browser as you type.</p>
+
+        <p class="hint" style="margin-top: 24px">
+          Every publish is a commit on
+          <a href="https://github.com/rakiaahmad17-prog/portfolio-raziq/commits/main/articles" target="_blank" rel="noopener">the articles folder</a>,
+          so any version can be rolled back. Markdown reference:
+          <a href="https://www.markdownguide.org/cheat-sheet/" target="_blank" rel="noopener">cheat sheet</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <p class="footer__mark">Ahmad Raziq</p>
+      <div class="footer__nav">
+        <div>
+          <p class="mono">Pages</p>
+          <a href="index.html">Work</a>
+          <a href="artikel.html">Writing</a>
+          <a href="tulis.html">Write</a>
+        </div>
+        <div>
+          <p class="mono">Elsewhere</p>
+          <a href="https://barakadental.com" target="_blank" rel="noopener">Baraka Dental ↗</a>
+          <a href="https://wa.me/6281958343836" target="_blank" rel="noopener">WhatsApp ↗</a>
+        </div>
+        <div>
+          <p class="mono">Studio</p>
+          <p>Makassar, South Sulawesi<br>Indonesia — WITA</p>
+          <p data-clock>—</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="mono">© 2026 Ahmad Raziq Abiyuqail Umarella</p>
+      <p class="mono">Designed and built by hand in Makassar. No template.</p>
+      <button class="to-top mono" type="button" data-top>Back to top ↑</button>
+    </div>
+  </div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/md.js"></script>
+<script src="js/articles.js"></script>
+<script src="main.js" defer></script>
+<script>
+(function () {
+  "use strict";
+
+  var TOKEN_KEY = "arziq:gh-token";
+  var DRAFT_KEY = "arziq:draft:v1";
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  var gate = $("gate");
+  var editor = $("editor");
+  var tokenInput = $("tokenInput");
+  var gateLog = $("gateLog");
+  var logEl = $("log");
+
+  var fTitle = $("fTitle");
+  var fSlug = $("fSlug");
+  var fDate = $("fDate");
+  var fTags = $("fTags");
+  var fExcerpt = $("fExcerpt");
+  var fBody = $("fBody");
+
+  var presev = $("prese");
+  var counts = $("counts");
+  var previewSlug = $("previewSlug");
+  var savedHint = $("savedHint");
+
+  var slugTouched = false;
+
+  function today() {
+    var d = new Date();
+    var p = function (n) { return String(n).padStart(2, "0"); };
+    return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate());
+  }
+
+  function say(msg, kind) {
+    logEl.textContent = msg;
+    logEl.className = "log" + (kind ? " is-" + kind : "");
+  }
+
+  function note(msg) {
+    savedHint.textContent = msg;
+    clearTimeout(note._t);
+    note._t = setTimeout(function () { savedHint.textContent = ""; }, 2500);
+  }
+
+  /* ------------------------------------------------------------- draft */
+  function collect() {
+    return {
+      title: fTitle.value,
+      slug: fSlug.value,
+      date: fDate.value,
+      tags: fTags.value,
+      excerpt: fExcerpt.value,
+      body: fBody.value,
+    };
+  }
+
+  function restore(d) {
+    if (!d) return;
+    fTitle.value = d.title || "";
+    fSlug.value = d.slug || "";
+    fDate.value = d.date || today();
+    fTags.value = d.tags || "";
+    fExcerpt.value = d.excerpt || "";
+    fBody.value = d.body || "";
+    if (d.slug) slugTouched = true;
+  }
+
+  var saveTimer;
+  function autosave() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () {
+      try {
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(collect()));
+        note("draft saved");
+      } catch (e) { /* private mode — drafts simply do not persist */ }
+    }, 700);
+  }
+
+  /* ----------------------------------------------------------- preview */
+  function drawPreview() {
+    var body = fBody.value;
+    presev.innerHTML = window.MD.render(body);
+    var words = body.trim() ? body.trim().split(/\s+/).length : 0;
+    counts.textContent = words + (words === 1 ? " word · " : " words · ") + window.MD.readingMinutes(body) + " min";
+    previewSlug.textContent = fSlug.value ? "articles/" + fSlug.value + ".md" : "articles/untitled.md";
+  }
+
+  /* --------------------------------------------------------- frontmatter */
+  function q(s) { return '"' + String(s || "").replace(/"/g, '\\"') + '"'; }
+
+  function buildFile(d) {
+    var tags = String(d.tags || "")
+      .split(",")
+      .map(function (t) { return t.trim(); })
+      .filter(Boolean);
+
+    var head = [
+      "---",
+      "title: " + q(d.title),
+      "date: " + (d.date || today()),
+      "tags: [" + tags.join(", ") + "]",
+    ];
+    if (d.excerpt) head.push("excerpt: " + q(d.excerpt));
+    head.push("---", "");
+
+    return head.join("\n") + String(d.body || "").replace(/^\n+/, "") + "\n";
+  }
+
+  /* ------------------------------------------------------------ toolbar */
+  function surroundTextarea(before, after) {
+    var ta = fBody;
+    var start = ta.selectionStart;
+    var end = ta.selectionEnd;
+    var selected = ta.value.slice(start, end) || "text";
+    ta.value = ta.value.slice(0, start) + before + selected + after + ta.value.slice(end);
+    ta.focus();
+    ta.setSelectionRange(start + before.length, start + before.length + selected.length);
+    drawPreview();
+    autosave();
+  }
+
+  function prefixLines(prefix) {
+    var ta = fBody;
+    var start = ta.selectionStart;
+    var end = ta.selectionEnd;
+    var value = ta.value;
+
+    var lineStart = value.lastIndexOf("\n", Math.max(0, start - 1)) + 1;
+    var chunk = value.slice(lineStart, end);
+    var replaced = chunk.split("\n").map(function (line, i) {
+      return prefix.trim() === "1." ? (i + 1) + ". " + line : prefix + line;
+    }).join("\n");
+
+    ta.value = value.slice(0, lineStart) + replaced + value.slice(end);
+    ta.focus();
+    ta.setSelectionRange(lineStart, lineStart + replaced.length);
+    drawPreview();
+    autosave();
+  }
+
+  function wrapBlock(token) {
+    var ta = fBody;
+    var start = ta.selectionStart;
+    var end = ta.selectionEnd;
+    var selected = ta.value.slice(start, end) || "code";
+    ta.value = ta.value.slice(0, start) + token + "\n" + selected + "\n" + token + ta.value.slice(end);
+    ta.focus();
+    drawPreview();
+    autosave();
+  }
+
+  document.querySelectorAll(".tbtn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      if (btn.dataset.wrap) surroundTextarea(btn.dataset.wrap, btn.dataset.wrap);
+      else if (btn.dataset.line) prefixLines(btn.dataset.line);
+      else if (btn.dataset.block) wrapBlock(btn.dataset.block);
+      else if (btn.dataset.link) {
+        var url = window.prompt("Link to where?", "https://");
+        if (url) surroundTextarea("[", "](" + url + ")");
+      }
+    });
+  });
+
+  /* ------------------------------------------------------------ publish */
+  function token() { return (localStorage.getItem(TOKEN_KEY) || "").trim(); }
+
+  function publish() {
+    var d = collect();
+
+    if (!d.title.trim()) { say("A title is needed before publishing.", "err"); fTitle.focus(); return; }
+    if (!d.body.trim()) { say("There is nothing to publish yet.", "err"); fBody.focus(); return; }
+
+    var slug = window.MD.slugify(d.slug || d.title);
+    fSlug.value = slug;
+
+    if (!token()) {
+      say("No GitHub token saved. Reload this page and paste one to publish.", "err");
+      gate.hidden = false;
+      editor.hidden = true;
+      return;
+    }
+
+    var path = window.ARZIQ.github.path + "/" + slug + ".md";
+    var file = buildFile(d);
+
+    say("Publishing " + path + " …");
+    document.getElementById("publish").disabled = true;
+
+    window.Articles.publish(token(), path, file, "Publish: " + d.title)
+      .then(function (res) {
+        if (!res.ok) {
+          return res.json().then(function (j) {
+            throw new Error(j.message || ("GitHub replied " + res.status));
+          });
+        }
+        return res.json();
+      })
+      .then(function () {
+        window.Articles.bustCache();
+        try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+        say("Published. The article is live now — " +
+            "https://portfolio-raziq.vercel.app/article.html?slug=" + encodeURIComponent(slug), "ok");
+        document.getElementById("publish").disabled = false;
+      })
+      .catch(function (err) {
+        document.getElementById("publish").disabled = false;
+        say("Publish failed: " + err.message, "err");
+      });
+  }
+
+  /* ------------------------------------------------------------- wiring */
+  fTitle.addEventListener("input", function () {
+    if (!slugTouched) fSlug.value = window.MD.slugify(fTitle.value);
+    drawPreview();
+    autosave();
+  });
+  fSlug.addEventListener("input", function () { slugTouched = true; drawPreview(); autosave(); });
+  fDate.addEventListener("input", autosave);
+  fTags.addEventListener("input", autosave);
+  fExcerpt.addEventListener("input", autosave);
+  fBody.addEventListener("input", function () { drawPreview(); autosave(); });
+
+  document.getElementById("publish").addEventListener("click", publish);
+
+  document.getElementById("download").addEventListener("click", function () {
+    var d = collect();
+    var blob = new Blob([buildFile(d)], { type: "text/markdown;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = (window.MD.slugify(d.slug || d.title || "article")) + ".md";
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    say("Downloaded. Drop it in the articles folder if you would rather publish by hand.");
+  });
+
+  document.getElementById("clearAll").addEventListener("click", function () {
+    fTitle.value = ""; fSlug.value = ""; fExcerpt.value = ""; fTags.value = ""; fBody.value = "";
+    fDate.value = today();
+    slugTouched = false;
+    drawPreview();
+    try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+    say("Cleared. Draft removed from this browser.");
+  });
+
+  document.getElementById("loadExisting").addEventListener("click", function () {
+    var slug = window.prompt("Slug of the article to load (the filename, no .md):", "");
+    if (!slug) return;
+    window.Articles.get(window.MD.slugify(slug))
+      .then(function (a) {
+        fTitle.value = a.title;
+        fSlug.value = a.slug;
+        fDate.value = a.date || today();
+        fTags.value = a.tags.join(", ");
+        fExcerpt.value = a.excerpt || "";
+        fBody.value = a.body;
+        slugTouched = true;
+        drawPreview();
+        say("Loaded " + a.slug + ". Publishing will update that file.");
+      })
+      .catch(function () { say("Could not find an article with that slug.", "err"); });
+  });
+
+  /* --------------------------------------------------------- token gate */
+  function openEditor() {
+    gate.hidden = true;
+    editor.hidden = false;
+    fDate.value = fDate.value || today();
+    drawPreview();
+  }
+
+  document.getElementById("saveToken").addEventListener("click", function () {
+    var value = tokenInput.value.trim();
+    if (value.length < 20) {
+      gateLog.hidden = false;
+      gateLog.textContent = "That does not look like a token. Paste the whole string.";
+      gateLog.className = "log is-err";
+      return;
+    }
+    try { localStorage.setItem(TOKEN_KEY, value); } catch (e) {}
+    tokenInput.value = "";
+    say("Token saved in this browser. You can publish now.", "ok");
+    openEditor();
+  });
+
+  document.getElementById("forgetToken").addEventListener("click", function () {
+    try { localStorage.removeItem(TOKEN_KEY); } catch (e) {}
+    document.getElementById("forgetToken").hidden = true;
+    say("Token forgotten.", "ok");
+  });
+
+  /* ------------------------------------------------------------- start */
+  if (token()) {
+    document.getElementById("forgetToken").hidden = false;
+    openEditor();
+    try {
+      var draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null");
+      if (draft) { restore(draft); note("draft restored"); }
+    } catch (e) {}
+  } else {
+    gate.hidden = false;
+  }
+  fDate.value = fDate.value || today();
+})();
+</script>
+</body>
+</html>

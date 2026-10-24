@@ -14,24 +14,47 @@
       .replace(/"/g, "&quot;");
   }
 
-  /* Inline formatting. Runs after HTML escaping, so anything the
-     author wrote as raw HTML is shown as text, not markup. */
-  function inline(src) {
-    var codes = [];
-    var text = src.replace(/`([^`]+)`/g, function (m, c) {
-      codes.push(c);
-      return "\u0000" + (codes.length - 1) + "\u0000";
-    });
+  /* Attribute-safe variant: no need to escape < > inside a URL. */
+  function attr(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+  }
 
-    text = esc(text);
+  /* Emphasis, applied to already-escaped text. */
+  function emph(s) {
+    return s
+      .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+      .replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>")
+      .replace(/~~([^~]+)~~/g, "<del>$1</del>");
+  }
+
+  /* URLs that would execute rather than navigate are left as plain text. */
+  var SAFE_SCHEME = /^(https?:|mailto:|tel:|\/|#|\.{0,2}\/|[^a-z]|[a-z0-9.\-_]*$)/i;
+  function safeUrl(url) {
+    var u = String(url).trim();
+    return SAFE_SCHEME.test(u) ? u : "";
+  }
+
+  /* Inline formatting. Links, images and code are lifted out before the
+     rest of the text is escaped, so their attributes survive intact and
+     anything the author wrote as raw HTML is shown as text. */
+  function inline(src) {
+    var slots = [];
+    var keep = function (html) {
+      slots.push(html);
+      return "\u0001" + (slots.length - 1) + "\u0001";
+    };
+
+    var text = String(src);
 
     /* Images before links — both start with a bracket. */
     text = text.replace(
       /!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)/g,
-      function (m, alt, src2, title) {
-        return (
-          '<img src="' + src2 + '" alt="' + alt + '"' +
-          (title ? ' title="' + title + '"' : "") +
+      function (m, alt, url, title) {
+        var href = safeUrl(url);
+        if (!href) return m;
+        return keep(
+          '<img src="' + attr(href) + '" alt="' + attr(alt) + '"' +
+          (title ? ' title="' + attr(title) + '"' : "") +
           ' loading="lazy" decoding="async">'
         );
       }
@@ -39,26 +62,28 @@
 
     text = text.replace(
       /\[([^\]]+)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)/g,
-      function (m, label, href, title) {
+      function (m, label, url, title) {
+        var href = safeUrl(url);
+        if (!href) return m;
         var external = /^https?:\/\//i.test(href);
-        return (
-          '<a href="' + href + '"' +
+        return keep(
+          '<a href="' + attr(href) + '"' +
           (external ? ' target="_blank" rel="noopener"' : "") +
-          (title ? ' title="' + title + '"' : "") +
-          ">" + label + "</a>"
+          (title ? ' title="' + attr(title) + '"' : "") +
+          ">" + emph(esc(label)) + "</a>"
         );
       }
     );
 
-    text = text.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
-    text = text.replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
-    text = text.replace(/~~([^~]+)~~/g, "<del>$1</del>");
-
-    text = text.replace(/\u0000(\d+)\u0000/g, function (m, i) {
-      return "<code>" + esc(codes[Number(i)]) + "</code>";
+    text = text.replace(/`([^`]+)`/g, function (m, c) {
+      return keep("<code>" + esc(c) + "</code>");
     });
 
-    return text;
+    text = emph(esc(text));
+
+    return text.replace(/\u0001(\d+)\u0001/g, function (m, i) {
+      return slots[Number(i)];
+    });
   }
 
   var BLOCK_START = /^(#{1,4}\s|>|```|\s*[-*+]\s|\s*\d+\.\s|\s*(---|\*\*\*|___)\s*$)/;

@@ -63,7 +63,9 @@
     };
   }
 
-  /* One request returns every article's body, so the list page is fast. */
+  /* GitHub returns metadata only for a directory listing, so the body of
+     each article is fetched from its raw URL afterwards. The raw host is
+     a CDN and is not subject to the API's 60-requests-per-hour limit. */
   function fetchList(force) {
     if (!force) {
       var cached = cacheRead();
@@ -80,17 +82,28 @@
       })
       .then(function (files) {
         if (!Array.isArray(files)) return [];
-        var list = files
-          .filter(function (f) { return /\.md$/i.test(f.name); })
-          .map(function (f) {
-            var body = f.content ? b64ToUtf8(f.content) : "";
-            return toMeta(f, body);
+        var mds = files.filter(function (f) {
+          return f.type === "file" && /\.md$/i.test(f.name) && f.download_url;
+        });
+
+        return Promise.all(
+          mds.map(function (f) {
+            return fetch(f.download_url, { cache: "no-store" })
+              .then(function (r) {
+                if (!r.ok) throw new Error("raw " + r.status);
+                return r.text();
+              })
+              .then(function (body) { return toMeta(f, body); })
+              .catch(function () { return null; });
           })
-          .sort(function (a, b) {
-            return String(b.date).localeCompare(String(a.date)) || a.title.localeCompare(b.title);
-          });
-        cacheWrite(list);
-        return list;
+        );
+      })
+      .then(function (list) {
+        var out = list.filter(Boolean).sort(function (a, b) {
+          return String(b.date).localeCompare(String(a.date)) || a.title.localeCompare(b.title);
+        });
+        cacheWrite(out);
+        return out;
       });
   }
 
